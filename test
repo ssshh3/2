@@ -1,0 +1,107 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+
+class Program
+{
+    static void Main()
+    {
+        const int N = 100000;
+
+        Console.WriteLine($"Тестирование структур данных с N = {N}");
+
+        // Создание и тестирование массива
+        TestArray(N);
+
+        Console.WriteLine();
+
+        // Создание и тестирование односвязного списка
+        TestLinkedList(N);
+    }
+
+    static void TestArray(int n)
+    {
+        Console.WriteLine("Массив:");
+
+        // Создание массива
+        Stopwatch sw = Stopwatch.StartNew();
+        int[] array = new int[n];
+        for (int i = 0; i < n; i++)
+        {
+            array[i] = i;
+        }
+        sw.Stop();
+        Console.WriteLine($"Создание массива: {sw.Elapsed.TotalMilliseconds:F4} ms");
+
+        // Вставка в начало массива 
+        sw.Restart();
+        int[] newArray = new int[n + 1];
+        newArray[0] = -1; // Вставляемый элемент
+        Array.Copy(array, 0, newArray, 1, n);
+        sw.Stop();
+        Console.WriteLine($"Вставка в начало: {sw.Elapsed.TotalMilliseconds:F4} ms");
+
+        // Вставка в конец массива
+        sw.Restart();
+        Array.Resize(ref array, array.Length + 1);
+        array[array.Length - 1] = -1;
+        sw.Stop();
+        Console.WriteLine($"Вставка в конец: {sw.Elapsed.TotalMilliseconds:F4} ms");
+
+        // Доступ к среднему элементу
+        sw.Restart();
+        int middleElement = array[n / 2];
+        sw.Stop();
+        Console.WriteLine($"Доступ к среднему: {sw.Elapsed.TotalMilliseconds:F6} ms");
+
+        // Доступ к последнему элементу
+        sw.Restart();
+        int lastElement = array[array.Length - 1];
+        sw.Stop();
+        Console.WriteLine($"Доступ к последнему: {sw.Elapsed.TotalMilliseconds:F6} ms");
+    }
+
+    static void TestLinkedList(int n)
+    {
+        Console.WriteLine("Односвязный список:");
+
+        // Создание односвязного списка
+        Stopwatch sw = Stopwatch.StartNew();
+        LinkedList<int> linkedList = new LinkedList<int>();
+        for (int i = 0; i < n; i++)
+        {
+            linkedList.AddLast(i);
+        }
+        sw.Stop();
+        Console.WriteLine($"Создание списка: {sw.Elapsed.TotalMilliseconds:F4} ms");
+
+        // Вставка в начало списка 
+        sw.Restart();
+        linkedList.AddFirst(-1);
+        sw.Stop();
+        Console.WriteLine($"Вставка в начало: {sw.Elapsed.TotalMilliseconds:F6} ms");
+
+        // Вставка в конец списка 
+        sw.Restart();
+        linkedList.AddLast(-1);
+        sw.Stop();
+        Console.WriteLine($"Вставка в конец: {sw.Elapsed.TotalMilliseconds:F6} ms");
+
+        // Доступ к среднему элементу
+        sw.Restart();
+        LinkedListNode<int> currentNode = linkedList.First;
+        for (int i = 0; i < n / 2; i++)
+        {
+            currentNode = currentNode.Next;
+        }
+        int middleElement = currentNode.Value;
+        sw.Stop();
+        Console.WriteLine($"Доступ к среднему: {sw.Elapsed.TotalMilliseconds:F4} ms");
+
+        // Доступ к последнему элементу
+        sw.Restart();
+        int lastElement = linkedList.Last.Value;
+        sw.Stop();
+        Console.WriteLine($"Доступ к последнему: {sw.Elapsed.TotalMilliseconds:F6} ms");
+    }
+}
